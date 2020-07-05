@@ -1,19 +1,20 @@
-# Geotools
+# locintel
 
-Core library for mapping & routing domain - no ambiguity and no repetition for atomic building blocks.
+__locintel__ is a <b>loc</b>ation <b>intel</b>ligence Python library focusing on easy and efficient map, routing and GPS/trace data collection, processing, analysis and learning.
 
-## Features
+Have fun!
 
-* Python data model for geospatial domains, with converters to/from popular formats
-* Projection-aware geospatial algebra
-* Easy-to-use interfaces with different services (routing, matching, geocoding, etc.)
-* Core algorithms and utils for routing domain
+## Featured modules
 
-## Dev guidelines
+### datamodel: unambiguous abstractions for location intelligence entities + converters  
 
-Please think twice before adding dependencies to this package, as these will having a cascading effect on other downstream libraries and apps.
+Avoid implementing boilerplate geospatial classes such as `GeoPoint`, `Point` or `Route` (and conversions to/from popular formats like GeoJson) across your organziation's codebase, and furthermore establish and agree on fixed semantics for each entity in the domain, for free-flowing and unambiguous discoure and discussions with peers. 
 
-## Example: add noise to Geometry
+### algorithms: efficient procedures for projection-aware processing and transformation of location entities (e.g. routes)
+
+_No need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopandas` 
+
+__Example: add noise to Geometry__
 
 ```python
 from geotools.datamodel.geo import Geometry
@@ -31,11 +32,12 @@ plt.scatter(*zip(*geo_very_noisy.to_lng_lat_tuples()), s=1, c='r')
 
 ![noisy-geo](_img/noisy_geo.png) 
 
-## Services
 
-Python library providing easy-to-use interfaces with different domain-relevant services (routing, matching, etc.)
+### harvest: easy-to-use interfaces to harvest data from variety of services (e.g. google/bing routing, matching, geocoding, etc.) 
 
-### Example: Collect route
+_Be free from crunching and managing API semantics into `urlllib` or `requests` calls_
+
+__Example: Harvest route__
 
 ```python
 from geotools.datamodel.routing import RoutePlan, WayPoint
@@ -56,21 +58,7 @@ das.geometry.to_geojson()
 das.geometry.to_poyline()
 ```
 
-### Example: Benchmark routes
-
-```python
-from geotools.datamodel.routing import RoutePlan, WayPoint
-from geotools.routes.quality.metrics.geometry import hausdorff_distance
-from geotools.services.routing import calculate_competitive
-
-rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
-results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_distance])
-
-# save test results into CSV
-results.to_csv('results.csv')
-```
-
-### Example: Collect route (more control)
+__Example: Harvest route (more control)__
 
 ```python
 from geotools.datamodel.routing import RoutePlan, WayPoint
@@ -89,24 +77,9 @@ das_route.geometry.to_geojson()
 das_route.geometry.to_poyline()
 ```
 
-## route quality
+### analytics: quality assessment suite for location intelligence products like routes and respective travel times
 
-Python package dedicated to unified domain datamodel and tools for route quality assessment.
-
-Includes:
-
-* Random o-d pair generator
-* Geometry similarity comparison with various methods for different use cases
-* Multitude of methods and metrics for route choice and ETA quality assessment
-
-## Setup & Installation 
-
-1. `pipenv shell`
-2. `pipenv install` (add `--dev` switch to install dev/test packages also)
-
-Have fun!
-
-### Example: Generate random route plan in polygon
+__Example: Generate random route plan in polygon__
 
 ```python
 from geotools.routes.quality import RandomRouteGenerator
@@ -118,7 +91,7 @@ berlin = sg.Polygon([(13.281949, 52.542348), (13.509650, 52.542348),
 rp = RandomRouteGenerator().generate_route(polygon=berlin)
 ```
 
-### Example: Compare two geometries
+__Example: Compare two geometries__
 
 ```python
 from geotools.datamodel.geo import Geometry
@@ -130,7 +103,7 @@ geo_2 = Geometry.from_geojson('geo2.json')
 score = GeometryComparator.compare(geo1, geo2, method='hausdorff')
 ```
 
-### Example: Analyse geometries
+__Example: Analyse geometries__
 
 ```python
 from geotools.datamodel.geo import Geometry
@@ -141,3 +114,22 @@ geo.has_loops()
 geo.skewness()  # Straight-line-distance/interpolated length
 ```
 
+__Example: Benchmark routes__
+
+```python
+from geotools.datamodel.routing import RoutePlan, WayPoint
+from geotools.routes.quality.metrics.geometry import hausdorff_distance
+from geotools.services.routing import calculate_competitive
+
+rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
+results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_distance])
+
+# save test results into CSV
+results.to_csv('results.csv')
+```
+
+## Dismbiguation 
+
+With the wealth of geospatial library out there, it is important to underline what this library is __not__ intended to be:
+* A full-featured geospatial data abstraction layer library, [GDAL](https://gdal.org/) is a much better option if you need that
+* A full-featured computational geometry library, [PySAL](https://pysal.org/)  
