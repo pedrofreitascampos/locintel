@@ -1,6 +1,6 @@
-from das.routing.core.datamodel.geo import GeoCoordinate
-from das.routing.graphs.datamodel.jurbey import Mask
-from das.routing.graphs.datamodel.osm import (
+from locintel.core.datamodel.geo import GeoCoordinate
+from locintel.graphs.datamodel.jurbey import Mask
+from locintel.graphs.datamodel.osm import (
     Node as OsmNode,
     Way,
     Relation,

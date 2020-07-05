@@ -4,9 +4,9 @@ import os
 from ratelimit import limits, sleep_and_retry
 import requests
 
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
-from das.routing.core.datamodel.routing import Route
-from das.routing.core.datamodel.matching import MatchPlan
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.core.datamodel.routing import Route
+from locintel.core.datamodel.matching import MatchPlan
 
 ROUTER_CALLS = 1200 if os.getenv("ROUTER_ENV") == "staging" else -1
 ROUTER_PERIOD = 60 if os.getenv("ROUTER_ENV") == "staging" else -1
@@ -22,7 +22,7 @@ class AbstractMatcher(object):
         raise NotImplementedError("Please implement subclass method")
 
 
-class DasMatcher(AbstractMatcher):
+class MapboxMatcher(AbstractMatcher):
     def __init__(
         self,
         endpoint="https://routing.develop.otonomousmobility.com/car/v1/match",
@@ -31,12 +31,12 @@ class DasMatcher(AbstractMatcher):
         headers=None,
         adapter=None,
     ):
-        adapter = adapter or DasMatcherResponseAdapter
+        adapter = adapter or MapboxMatcherResponseAdapter
         super().__init__(endpoint, adapter)
         self.user = user
         self.password = password
         self.headers = {"Content-Type": "application/json"} or headers
-        self.name = "das-matching"
+        self.name = "mapbox-matching"
 
     @sleep_and_retry
     @limits(calls=ROUTER_CALLS, period=ROUTER_PERIOD)  # allow 20req/s
@@ -104,7 +104,7 @@ class AbstractMatcherResponseAdapter(object):
         raise NotImplementedError("Please implement subclass method")
 
 
-class DasMatcherResponseAdapter(AbstractMatcherResponseAdapter):
+class MapboxMatcherResponseAdapter(AbstractMatcherResponseAdapter):
     def __init__(self, response):
         super().__init__(response)
 
@@ -165,4 +165,4 @@ class DasMatcherResponseAdapter(AbstractMatcherResponseAdapter):
         return len(list(filter(lambda x: not x, self.response["tracepoints"])))
 
 
-MATCHERS = {"das": DasMatcher}
+MATCHERS = {"mapbox": MapboxMatcher}

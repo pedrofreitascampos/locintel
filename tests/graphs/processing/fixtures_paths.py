@@ -1,5 +1,5 @@
-from das.routing.core.datamodel.geo import Geometry, GeoCoordinate
-from das.routing.graphs.datamodel.jurbey import Path
+from locintel.core.datamodel.geo import Geometry, GeoCoordinate
+from locintel.graphs.datamodel.jurbey import Path
 
 from tests.base_fixture import coordinates, graph
 

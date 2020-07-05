@@ -5,8 +5,8 @@ from typing import List, Dict
 
 import osmium
 
-from das.routing.core.datamodel.geo import GeoCoordinate
-from das.routing.graphs.datamodel.types import SignType, RoadClass
+from locintel.core.datamodel.geo import GeoCoordinate
+from locintel.graphs.datamodel.types import SignType, RoadClass
 
 
 @dataclass

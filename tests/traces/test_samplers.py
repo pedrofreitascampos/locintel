@@ -1,4 +1,4 @@
-from das.routing.traces.samplers import SimpleSampler
+from locintel.traces.samplers import SimpleSampler
 
 from tests.fixtures import *
 

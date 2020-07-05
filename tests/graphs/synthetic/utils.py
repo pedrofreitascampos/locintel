@@ -1,8 +1,8 @@
 import numpy as np
 
-from das.routing.core.datamodel.geo import GeoCoordinate
-from das.routing.graphs.datamodel.jurbey import Edge
-from das.routing.graphs.datamodel.types import (
+from locintel.core.datamodel.geo import GeoCoordinate
+from locintel.graphs.datamodel.jurbey import Edge
+from locintel.graphs.datamodel.types import (
     EdgeType,
     RoadClass,
     RoadAccessibility,

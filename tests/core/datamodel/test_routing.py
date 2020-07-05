@@ -1,4 +1,4 @@
-from das.routing.core.datamodel.routing import RoutePlan, Route
+from locintel.core.datamodel.routing import RoutePlan, Route
 
 from tests.fixtures.routing import *
 from tests.fixtures.geo import *
@@ -178,14 +178,14 @@ class TestRoute(object):
             return_value=expected_route_plan_mock
         )
         mocker.patch(
-            "das.routing.core.datamodel.routing.RoutePlan.from_database_document",
+            "locintel.core.datamodel.routing.RoutePlan.from_database_document",
             route_plan_from_database_document_mock,
         )
         expected_geometry_mock = Mock(
             coords=[Mock(lat=lat, lng=lng, alt=0.0) for lng, lat in expected_geometry]
         )
 
-        result = Route.from_database_document(route_das)
+        result = Route.from_database_document(route_mapbox)
 
         assert isinstance(result, Route)
         assert result.distance == expected_distance

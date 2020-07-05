@@ -1,4 +1,4 @@
-from das.routing.core.algorithms.strings import levenshtein_distance
+from locintel.core.algorithms.strings import levenshtein_distance
 
 
 class TestLevenshteinDistance(object):

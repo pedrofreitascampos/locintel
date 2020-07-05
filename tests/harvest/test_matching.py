@@ -1,18 +1,18 @@
-from das.routing.services.matching import DasMatcher
+from locintel.services.matching import MapboxMatcher
 
-from tests.fixtures_matching import setup_das_matcher_environment
+from tests.fixtures_matching import setup_mapbox_matcher_environment
 
 import pytest
 from unittest.mock import Mock
 
 
 class TestMatching:
-    matcher = DasMatcher(endpoint="http://localhost:5000/v1/match")
+    matcher = MapboxMatcher(endpoint="http://localhost:5000/v1/match")
     coords = [[0, 0], [1, 0], [2, 0]]
     plan = Mock(points=[Mock(lat=coord[0], lng=coord[1]) for coord in coords])
 
-    def test_calculate(self, setup_das_matcher_environment):
-        expected_match = setup_das_matcher_environment["expected_match"]
+    def test_calculate(self, setup_mapbox_matcher_environment):
+        expected_match = setup_mapbox_matcher_environment["expected_match"]
         match = self.matcher.calculate(self.plan)
 
         assert match.duration == expected_match.duration

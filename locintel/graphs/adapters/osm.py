@@ -3,7 +3,7 @@ import logging
 import osmium
 import re
 
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
 
 from .base import BaseAdapter
 from ..datamodel.jurbey import Edge, Node

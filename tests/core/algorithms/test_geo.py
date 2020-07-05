@@ -1,7 +1,7 @@
 from math import isclose
 
-from das.routing.core.datamodel.geo import GeoCoordinate
-from das.routing.core.algorithms.geo import calculate_angle
+from locintel.core.datamodel.geo import GeoCoordinate
+from locintel.core.algorithms.geo import calculate_angle
 
 import pytest
 

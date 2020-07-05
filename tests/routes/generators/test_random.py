@@ -1,7 +1,7 @@
 import random
 import shapely.geometry as sg
 
-from das.routing.quality.generators.random import RandomRoutePlanGenerator, polygons
+from locintel.quality.generators.random import RandomRoutePlanGenerator, polygons
 
 random.seed(10)
 

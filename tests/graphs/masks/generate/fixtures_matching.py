@@ -1,10 +1,10 @@
 from copy import deepcopy
 
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
-from das.routing.graphs.datamodel.jurbey import Path
-from das.routing.graphs.masks.generate.matching import RouteMatchingMaskGenerator
-from das.routing.graphs.processing.paths import PathsGenerator
-from das.routing.services.matching import DasMatcher
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.graphs.datamodel.jurbey import Path
+from locintel.graphs.masks.generate.matching import RouteMatchingMaskGenerator
+from locintel.graphs.processing.paths import PathsGenerator
+from locintel.services.matching import MapboxMatcher
 
 import pytest
 from unittest.mock import Mock
@@ -74,12 +74,12 @@ expected_hd_mapping = {
 
 
 @pytest.fixture
-def mock_das_route_matching(mocker):
+def mock_mapbox_route_matching(mocker):
     mock_match_1 = Mock()
     mock_match_2 = Mock()
     mock_matches = [mock_match_1, mock_match_2]
     mock_calculate = mocker.Mock(side_effect=mock_matches)
-    mocker.patch.object(DasMatcher, "calculate", mock_calculate)
+    mocker.patch.object(MapboxMatcher, "calculate", mock_calculate)
     return mock_matches, mock_calculate
 
 

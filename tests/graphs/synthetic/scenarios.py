@@ -21,7 +21,7 @@ from copy import deepcopy
 
 import networkx as nx
 
-from das.routing.graphs.datamodel.jurbey import Node
+from locintel.graphs.datamodel.jurbey import Node
 
 from allpairspy import AllPairs
 

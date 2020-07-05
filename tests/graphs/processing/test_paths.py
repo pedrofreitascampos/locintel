@@ -1,6 +1,6 @@
 import builtins
 
-from das.routing.graphs.processing.paths import PathsGenerator
+from locintel.graphs.processing.paths import PathsGenerator
 
 import pytest
 from tests.processing.fixtures_paths import expected_paths, graph

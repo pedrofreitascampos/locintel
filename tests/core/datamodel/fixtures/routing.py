@@ -1,6 +1,6 @@
 import pytest
 
-from das.routing.core.datamodel.routing import Waypoint
+from locintel.core.datamodel.routing import Waypoint
 
 
 @pytest.fixture

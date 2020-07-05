@@ -1,4 +1,4 @@
-from das.routing.core.datamodel.traces import Probe, Trace
+from locintel.core.datamodel.traces import Probe, Trace
 
 import pytest
 from unittest.mock import Mock

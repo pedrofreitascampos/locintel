@@ -1,6 +1,6 @@
-from das.routing.graphs.adapters.osm import OsmAdapter, OsmAdapterWithMask
-from das.routing.graphs.datamodel.jurbey import Jurbey
-from das.routing.graphs.masks.apply.osm import ApplyMaskOsmMixin
+from locintel.graphs.adapters.osm import OsmAdapter, OsmAdapterWithMask
+from locintel.graphs.datamodel.jurbey import Jurbey
+from locintel.graphs.masks.apply.osm import ApplyMaskOsmMixin
 
 import pytest
 from unittest.mock import Mock

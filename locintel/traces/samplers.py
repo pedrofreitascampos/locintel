@@ -1,4 +1,4 @@
-from das.routing.core.datamodel.traces import Trace
+from locintel.core.datamodel.traces import Trace
 
 
 class TraceSampling(object):

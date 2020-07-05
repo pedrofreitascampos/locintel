@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from numbers import Number
 from typing import Sequence
 
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
 
 WAYPOINT_KINDS = [
     "STOP",  # A stop is expected, next leg may start in any direction
@@ -155,7 +155,7 @@ class RoutePlan(object):
     def from_database_document(cls, doc):
         """
         Loads route from database document schema:
-            - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/das/routing/qualitys/schema/route_input.schema
+            - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/mapbox/routing/qualitys/schema/route_input.schema
 
         :param doc: json/database document
         """
@@ -182,7 +182,7 @@ class Route(object):
         self, geometry, distance, duration, segments=None, maneuvers=None, metadata=None
     ):
         """
-        :param geometry: geometry of the route, as das.routing.core.datamodel.geo.Geometry object
+        :param geometry: geometry of the route, as locintel.core.datamodel.geo.Geometry object
         :param distance: length of the route, in meters
         :param duration: duration of the route, in seconds
         :param segments: map segments traversed by the route, in Jurbey representation, as Segment objects
@@ -237,7 +237,7 @@ class Route(object):
     def from_database_document(cls, doc):
         """
         Convenience method to load route from database document schema:
-        - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/das/routing/quality/schema/route.schema
+        - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/mapbox/routing/quality/schema/route.schema
 
         :param doc: json/database document
         """
@@ -258,7 +258,7 @@ class Route(object):
     def to_database_document(self):
         """
         Serializes route to database document schema:
-        - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/das/routing/quality/schema/route.schema
+        - See https://gitlab.mobilityservices.io/am/roam/routing-python/blob/develop/quality/mapbox/routing/quality/schema/route.schema
 
         :param doc: json/database document
         """

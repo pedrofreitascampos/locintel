@@ -10,7 +10,7 @@ from typing import List, Set, Tuple
 from haversine import haversine
 import networkx as nx
 
-from das.routing.core.datamodel.geo import GeoCoordinate
+from locintel.core.datamodel.geo import GeoCoordinate
 
 from graphs.datamodel.osm import Sign
 from graph import compact_graph
@@ -65,7 +65,7 @@ class Mask:
 
 class Jurbey(nx.DiGraph):
     """
-    das-routing internal, provider-agnostic representation for graphs
+    mapbox-routing internal, provider-agnostic representation for graphs
     """
 
     def __init__(self, nodes=None, edges=None, restrictions=None, metadata=None):

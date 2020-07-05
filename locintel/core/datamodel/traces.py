@@ -3,7 +3,7 @@ from datetime import datetime
 from numbers import Number
 from typing import Sequence
 
-from das.routing.core.datamodel.geo import GeoCoordinate
+from locintel.core.datamodel.geo import GeoCoordinate
 
 
 @dataclass

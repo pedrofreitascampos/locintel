@@ -3,8 +3,8 @@ import inspect
 import math
 import shapely.geometry as sg
 
-from das.routing.core.algorithms.geo import frechet_distance
-from das.routing.core.algorithms.strings import levenshtein_distance
+from locintel.core.algorithms.geo import frechet_distance
+from locintel.core.algorithms.strings import levenshtein_distance
 
 
 class GeometryComparator(object):
@@ -45,7 +45,7 @@ class GeometryComparator(object):
     @staticmethod
     def compare_frechet(geo1, geo2):
         """
-        Calculates Frechet distance (see das.routing.core.algorithms.geo.frechet_distance)
+        Calculates Frechet distance (see locintel.core.algorithms.geo.frechet_distance)
         """
         return frechet_distance(geo1, geo2, len(geo1) - 1, len(geo2) - 1)
 

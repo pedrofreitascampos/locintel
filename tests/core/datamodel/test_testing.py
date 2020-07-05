@@ -1,4 +1,4 @@
-from das.routing.core.datamodel.testing import *
+from locintel.core.datamodel.testing import *
 from tests.fixtures.testing import *
 
 import pytest
@@ -44,14 +44,14 @@ class TestTestResult(object):
         route_plan_from_database_document = Mock(return_value=expected_route_plan_mock)
         route_from_database_document = Mock(side_effect=expected_routes)
         mocker.patch(
-            "das.routing.core.datamodel.routing.RoutePlan.from_database_document",
+            "locintel.core.datamodel.routing.RoutePlan.from_database_document",
             route_plan_from_database_document,
         )
         mocker.patch(
-            "das.routing.core.datamodel.routing.Route.from_database_document",
+            "locintel.core.datamodel.routing.Route.from_database_document",
             route_from_database_document,
         )
-        routes = [route_das, route_google]  # both fixtures share same test id
+        routes = [route_mapbox, route_google]  # both fixtures share same test id
 
         result = TestResult.from_database_documents(routes, expected_test_name)
 
@@ -59,9 +59,9 @@ class TestTestResult(object):
         assert result.plan == expected_route_plan_mock
         assert result.name == expected_test_name
         assert result.routes.keys() == expected_routes.keys()
-        route_plan_from_database_document.assert_called_with(route_das)
+        route_plan_from_database_document.assert_called_with(route_mapbox)
         route_from_database_document.assert_has_calls(
-            [call(route_das), call(route_google)]
+            [call(route_mapbox), call(route_google)]
         )
 
     def test_from_database_documents_empty_docs_raises_value_error(self):
@@ -74,10 +74,10 @@ class TestTestResult(object):
         route_plan = Mock()
         from_database_document = Mock(return_value=route_plan)
         mocker.patch(
-            "das.routing.core.datamodel.routing.RoutePlan.from_database_document",
+            "locintel.core.datamodel.routing.RoutePlan.from_database_document",
             from_database_document,
         )
-        routes = [route_das, route_das_2]  # different test ids
+        routes = [route_mapbox, route_mapbox_2]  # different test ids
 
         with pytest.raises(ValueError):
             TestResult.from_database_documents(routes, expected_test_name)
@@ -221,11 +221,11 @@ class TestExperimentResult(object):
         tests = [test_1, test_2]
         filename = "filename"
         mocker.patch(
-            "das.routing.core.datamodel.testing.ExperimentResult.get_providers",
+            "locintel.core.datamodel.testing.ExperimentResult.get_providers",
             return_value=providers,
         )
         mocker.patch(
-            "das.routing.core.datamodel.testing.ExperimentResult.get_metrics",
+            "locintel.core.datamodel.testing.ExperimentResult.get_metrics",
             return_value=metrics,
         )
         writer_mock = Mock(writerow=Mock())
@@ -233,7 +233,7 @@ class TestExperimentResult(object):
         m = mock_open()
         experiment_results = ExperimentResult(tests=tests)
 
-        with patch("das.routing.core.datamodel.testing.open", m, create=True):
+        with patch("locintel.core.datamodel.testing.open", m, create=True):
             experiment_results.to_csv(filename)
 
         m.assert_called_with(filename, "w")
@@ -259,11 +259,11 @@ class TestExperimentResult(object):
         cols_mock = Mock()
         rows_mock = Mock()
         mocker.patch(
-            "das.routing.core.datamodel.testing.ExperimentResult._get_columns",
+            "locintel.core.datamodel.testing.ExperimentResult._get_columns",
             return_value=cols_mock,
         )
         mocker.patch(
-            "das.routing.core.datamodel.testing.ExperimentResult._get_rows",
+            "locintel.core.datamodel.testing.ExperimentResult._get_rows",
             return_value=rows_mock,
         )
 
@@ -278,11 +278,11 @@ class TestExperimentResult(object):
         expected_test_results = [Mock(), Mock()]
         test_result_from_database_document = Mock(side_effect=expected_test_results)
         mocker.patch(
-            "das.routing.core.datamodel.testing.TestResult.from_database_documents",
+            "locintel.core.datamodel.testing.TestResult.from_database_documents",
             test_result_from_database_document,
         )
-        routes_test_1 = [route_das, route_google]  # routes with test id 1
-        routes_test_2 = [route_das_2, route_google_2]  # routes with test id 2
+        routes_test_1 = [route_mapbox, route_google]  # routes with test id 1
+        routes_test_2 = [route_mapbox_2, route_google_2]  # routes with test id 2
         routes = routes_test_1 + routes_test_2  # document has routes from both tests
 
         result = ExperimentResult.from_database_documents(routes)

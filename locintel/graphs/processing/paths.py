@@ -2,8 +2,8 @@ import json
 
 import networkx as nx
 
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
-from das.routing.graphs.datamodel.jurbey import Path
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.graphs.datamodel.jurbey import Path
 
 
 class PathsGenerator:

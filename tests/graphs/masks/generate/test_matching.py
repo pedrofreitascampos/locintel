@@ -1,9 +1,9 @@
-from das.routing.graphs.masks.generate.matching import RouteMatchingMaskGenerator
+from locintel.graphs.masks.generate.matching import RouteMatchingMaskGenerator
 
 from unittest.mock import Mock
 
 from .fixtures_matching import (
-    mock_das_route_matching,
+    mock_mapbox_route_matching,
     mock_decompose_mock,
     mock_path_generator,
     expected_edges,
@@ -15,7 +15,7 @@ from .fixtures_matching import (
 
 class TestGraphMatchingMaskGenerator:
     def test_generate(
-        self, mock_das_route_matching, mock_path_generator, mock_decompose_mock
+        self, mock_mapbox_route_matching, mock_path_generator, mock_decompose_mock
     ):
         odd_graph_mock = Mock()
         mask_generator = RouteMatchingMaskGenerator(odd_graph=odd_graph_mock)

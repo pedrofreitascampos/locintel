@@ -1,6 +1,6 @@
-from das.routing.core.datamodel.geo import GeoCoordinate, Geometry
-from das.routing.graphs.datamodel.jurbey import Edge, Node
-from das.routing.graphs.datamodel.types import (
+from locintel.core.datamodel.geo import GeoCoordinate, Geometry
+from locintel.graphs.datamodel.jurbey import Edge, Node
+from locintel.graphs.datamodel.types import (
     EdgeType,
     RoadClass,
     RoadAccessibility,

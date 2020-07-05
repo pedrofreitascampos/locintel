@@ -14,7 +14,7 @@ Furthermore establish and agree on fixed semantics for each entity in the domain
 
 ### core: algorithms
 
-Efficient procedures for projection-aware processing and transformation of location entities (e.g. routes) - no need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopandas`. 
+Efficient procedures for projection-aware processing and transformation of location entities (e.g. routes) - no need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopanmapbox`. 
 
 __Example: add noise to Geometry__
 
@@ -45,37 +45,37 @@ from locintel.core.datamodel.routing import RoutePlan, WayPoint
 from locintel.harvest.routes import calculate
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
-das = calculate(rp, 'das')
+mapbox = calculate(rp, 'mapbox')
 google = calculate('google')
 
 # Access important route information through common interface
-das.distance
-das.duration
+mapbox.distance
+mapbox.duration
 google.distance
 google.duration
 
 # Convert to other popular formats
-das.geometry.to_geojson()
-das.geometry.to_poyline()
+mapbox.geometry.to_geojson()
+mapbox.geometry.to_poyline()
 ```
 
 __Example: harvest route (more control)__
 
 ```python
 from locintel.core.datamodel.routing import RoutePlan, WayPoint
-from locintel.harvest.routes import DasRouter, GoogleRouter
+from locintel.harvest.routes import MapboxRouter, GoogleRouter
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
-das_route = DasRouter(username='username', password='password').calculate(rp)
+mapbox_route = MapboxRouter(username='username', password='password').calculate(rp)
 google_route = GoogleRouter().calculate(rp)
 
 # Access important route information through common interface
-das_route.distance
+mapbox_route.distance
 google_route.distance
 
 # Convert to other popular formats
-das_route.geometry.to_geojson()
-das_route.geometry.to_poyline()
+mapbox_route.geometry.to_geojson()
+mapbox_route.geometry.to_poyline()
 ```
 
 ### routes
@@ -125,7 +125,7 @@ from locintel.routes.metrics.geometry import hausdorff_distance
 from locintel.harvest.routes import calculate_competitive
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
-results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_distance])
+results = calculate_competitive(rp, ['mapbox', 'google'], comparators=[hausdorff_distance])
 
 # save test results into CSV
 results.to_csv('results.csv')

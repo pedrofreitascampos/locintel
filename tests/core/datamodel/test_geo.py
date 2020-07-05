@@ -5,7 +5,7 @@ import utm
 
 from unittest.mock import mock_open, patch, call
 
-from das.routing.core.datamodel.geo import *
+from locintel.core.datamodel.geo import *
 from tests.fixtures.geo import *
 
 
@@ -101,7 +101,7 @@ class TestGeoCoordinate(object):
         shapely_mock_1 = Mock(sg.Point, distance=Mock(return_value=distance))
         shapely_mock_2 = Mock(sg.Point)
         mocker.patch(
-            "das.routing.core.datamodel.geo.GeoCoordinate.to_shapely_point",
+            "locintel.core.datamodel.geo.GeoCoordinate.to_shapely_point",
             side_effect=[shapely_mock_1, shapely_mock_2],
         )
         result = coord_1.distance_to(coord_2)
@@ -125,11 +125,11 @@ class TestGeoCoordinate(object):
         )
         geocoord_mock = Mock(GeoCoordinate, lat=110, lng=120)
         mocker.patch(
-            "das.routing.core.datamodel.geo.GeoCoordinate.to_shapely_point",
+            "locintel.core.datamodel.geo.GeoCoordinate.to_shapely_point",
             return_value=shapely_mock,
         )
         mocker.patch(
-            "das.routing.core.datamodel.geo.GeoCoordinate.from_shapely_point",
+            "locintel.core.datamodel.geo.GeoCoordinate.from_shapely_point",
             return_value=geocoord_mock,
         )
         new_shapely_mock = Mock(sg.Point)
@@ -293,7 +293,7 @@ class TestGeometry(object):
         length = 10
         linestring_mock = Mock(sg.LineString, length=length)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.to_linestring",
+            "locintel.core.datamodel.geo.Geometry.to_linestring",
             return_value=linestring_mock,
         )
 
@@ -318,12 +318,12 @@ class TestGeometry(object):
         )
         shapely_mock_2 = Mock(sg.Point)
         mocker.patch(
-            "das.routing.core.datamodel.geo.GeoCoordinate.to_shapely_point",
+            "locintel.core.datamodel.geo.GeoCoordinate.to_shapely_point",
             side_effect=[shapely_mock_1, shapely_mock_2],
         )
         length = 100
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.length", return_value=length
+            "locintel.core.datamodel.geo.Geometry.length", return_value=length
         )
 
         geometry = Geometry([coord_1, coord_2])
@@ -370,10 +370,10 @@ class TestGeometry(object):
         self, mocker, test_geometry
     ):
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.skewness", return_value=10
+            "locintel.core.datamodel.geo.Geometry.skewness", return_value=10
         )
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.has_loops", return_value=True
+            "locintel.core.datamodel.geo.Geometry.has_loops", return_value=True
         )
         geometry = test_geometry
 
@@ -385,10 +385,10 @@ class TestGeometry(object):
         self, mocker, test_geometry
     ):
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.skewness", return_value=10
+            "locintel.core.datamodel.geo.Geometry.skewness", return_value=10
         )
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.has_loops", return_value=False
+            "locintel.core.datamodel.geo.Geometry.has_loops", return_value=False
         )
         geometry = test_geometry
 
@@ -400,10 +400,10 @@ class TestGeometry(object):
         self, mocker, test_geometry
     ):
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.skewness", return_value=10
+            "locintel.core.datamodel.geo.Geometry.skewness", return_value=10
         )
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.has_loops", return_value=True
+            "locintel.core.datamodel.geo.Geometry.has_loops", return_value=True
         )
         geometry = test_geometry
 
@@ -415,10 +415,10 @@ class TestGeometry(object):
         self, mocker, test_geometry
     ):
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.skewness", return_value=10
+            "locintel.core.datamodel.geo.Geometry.skewness", return_value=10
         )
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.has_loops", return_value=False
+            "locintel.core.datamodel.geo.Geometry.has_loops", return_value=False
         )
         geometry = test_geometry
 
@@ -618,12 +618,12 @@ class TestGeometry(object):
         mocker.patch("geojson.load", return_value={"coordinates": coordinates})
         target_geometry = Mock(Geometry)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_lng_lat_tuples",
+            "locintel.core.datamodel.geo.Geometry.from_lng_lat_tuples",
             return_value=target_geometry,
         )
         filename = "filename"
         m = mock_open()
-        with patch("das.routing.core.datamodel.geo.open", m, create=True):
+        with patch("locintel.core.datamodel.geo.open", m, create=True):
             result = Geometry.from_geojson(filename)
 
             assert result == target_geometry
@@ -640,12 +640,12 @@ class TestGeometry(object):
         )
         target_geometry = Mock(Geometry)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_lng_lat_tuples",
+            "locintel.core.datamodel.geo.Geometry.from_lng_lat_tuples",
             return_value=target_geometry,
         )
         filename = "filename"
         m = mock_open()
-        with patch("das.routing.core.datamodel.geo.open", m, create=True):
+        with patch("locintel.core.datamodel.geo.open", m, create=True):
             result = Geometry.from_geojson(filename)
 
             assert result == target_geometry
@@ -663,12 +663,12 @@ class TestGeometry(object):
         )
         target_geometry = Mock(Geometry)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_lng_lat_tuples",
+            "locintel.core.datamodel.geo.Geometry.from_lng_lat_tuples",
             return_value=target_geometry,
         )
         filename = "filename"
         m = mock_open()
-        with patch("das.routing.core.datamodel.geo.open", m, create=True):
+        with patch("locintel.core.datamodel.geo.open", m, create=True):
             result = Geometry.from_geojson(filename)
 
             assert result == target_geometry
@@ -692,12 +692,12 @@ class TestGeometry(object):
         )
         target_geometry = Mock(Geometry)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_lng_lat_tuples",
+            "locintel.core.datamodel.geo.Geometry.from_lng_lat_tuples",
             return_value=target_geometry,
         )
         filename = "filename"
         m = mock_open()
-        with patch("das.routing.core.datamodel.geo.open", m, create=True):
+        with patch("locintel.core.datamodel.geo.open", m, create=True):
             result = Geometry.from_geojson(filename, index=1)
 
             assert result == target_geometry
@@ -747,7 +747,7 @@ class TestGeometry(object):
     def test_to_polyline(self, mocker, mock_geometry, test_polyline):
         lat_lng_tuple = ((10, 20), (20, 30))
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.to_lat_lng_tuples",
+            "locintel.core.datamodel.geo.Geometry.to_lat_lng_tuples",
             return_value=lat_lng_tuple,
         )
         mocker.patch("polyline.encode", return_value=test_polyline)
@@ -764,7 +764,7 @@ class TestGeometry(object):
         mock_linestring = Mock(sg.LineString)
         mocker.patch("shapely.geometry.LineString", return_value=mock_linestring)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.to_lng_lat_tuples",
+            "locintel.core.datamodel.geo.Geometry.to_lng_lat_tuples",
             return_value=lng_lat_tuple,
         )
         geometry = Geometry([coord_1, coord_2])
@@ -783,7 +783,7 @@ class TestGeometry(object):
             (coord_1.lat, coord_1.lng),
         ]
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.to_lat_lng_tuples",
+            "locintel.core.datamodel.geo.Geometry.to_lat_lng_tuples",
             return_value=lat_lng_tuple,
         )
         geometry = Geometry([coord_1, coord_2, coord_1])
@@ -820,7 +820,7 @@ class TestGeometry(object):
     def test_to_geojson_write_to_file(self, mock_geometry):
         filename = "filename"
         m = mock_open()
-        with patch("das.routing.core.datamodel.geo.open", m, create=True):
+        with patch("locintel.core.datamodel.geo.open", m, create=True):
             result = mock_geometry.to_geojson(write_to=filename)
 
         assert result is None

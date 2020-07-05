@@ -1,4 +1,4 @@
-from das.routing.traces.loaders import DruidLoader
+from locintel.traces.loaders import DruidLoader
 
 import pytest
 from unittest.mock import Mock, patch, call
@@ -45,7 +45,7 @@ def mock_connector():
 
 
 class TestDruidLoader(object):
-    @patch("das.routing.traces.loaders.PyDruid")
+    @patch("locintel.traces.loaders.PyDruid")
     def test_druid_loader(self, druid_mock, mock_connector, fake_config):
         url, endpoint, datasource, user, password = fake_config
         druid_mock.return_value = mock_connector
@@ -71,9 +71,9 @@ class TestDruidLoader(object):
         mock_connector.set_basic_auth_credentials.assert_called_with(user, password)
         mock_connector.time_boundary.assert_called_with(datasource=datasource)
 
-    @patch("das.routing.traces.loaders.PyDruid")
-    @patch("das.routing.traces.loaders.Probe")
-    @patch("das.routing.traces.loaders.Trace")
+    @patch("locintel.traces.loaders.PyDruid")
+    @patch("locintel.traces.loaders.Probe")
+    @patch("locintel.traces.loaders.Trace")
     def test_load(
         self, trace_mock, probe_mock, druid_mock, mock_connector, fake_config
     ):

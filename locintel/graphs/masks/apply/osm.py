@@ -3,9 +3,9 @@ from copy import deepcopy
 from ordered_set import OrderedSet
 import networkx as nx
 
-from das.routing.core.algorithms.geo import create_vector, calculate_direction
-from das.routing.core.algorithms.itertools import pairwise
-from das.routing.core.datamodel.geo import GeoCoordinate
+from locintel.core.algorithms.geo import create_vector, calculate_direction
+from locintel.core.algorithms.itertools import pairwise
+from locintel.core.datamodel.geo import GeoCoordinate
 
 from ...datamodel.osm import Way, ViaNode, ViaWays, Relation
 from ...datamodel.jurbey import Edge, Node, Jurbey
@@ -16,7 +16,7 @@ from ...processing.utils import find_common_node, sort_nodes, get_adjacent_node
 
 class ApplyMaskOsmMixin(ApplyMaskBase):
     """
-    Extension to das.routing.graphs.adapters.osm.OsmAdapter which applies generated mask modifications at OSM load time
+    Extension to locintel.graphs.adapters.osm.OsmAdapter which applies generated mask modifications at OSM load time
     """
 
     def __init__(self):

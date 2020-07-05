@@ -2,10 +2,10 @@ from unittest.mock import Mock
 
 import pytest
 
-from das.routing.core.datamodel.geo import Geometry, GeoCoordinate
-from das.routing.core.datamodel.routing import Route, RoutePlan, Waypoint
-from das.routing.services.routing import DasResponseAdapter, GoogleResponseAdapter
-from das.routing.services.matching import DasMatcherResponseAdapter
+from locintel.core.datamodel.geo import Geometry, GeoCoordinate
+from locintel.core.datamodel.routing import Route, RoutePlan, Waypoint
+from locintel.services.routing import MapboxResponseAdapter, GoogleResponseAdapter
+from locintel.services.matching import MapboxMatcherResponseAdapter
 
 """
 Fixtures for Response parsing
@@ -14,7 +14,7 @@ lat1, lng1, lat2, lng2 = 10, 20, 15, 25
 coord1 = GeoCoordinate(lat=lat1, lng=lng1)
 coord2 = GeoCoordinate(lat=lat2, lng=lng2)
 expected_geometry = Geometry([coord1, coord2])
-geometry_das_translation = [{"lat": lat1, "lon": lng1}, {"lat": lat2, "lon": lng2}]
+geometry_mapbox_translation = [{"lat": lat1, "lon": lng1}, {"lat": lat2, "lon": lng2}]
 geometry_google_translation = "_c`|@_gayB_qo]_qo]"
 expected_distance = 100
 expected_duration = 50
@@ -22,7 +22,7 @@ expected_route = Route(
     distance=expected_distance, duration=expected_duration, geometry=expected_geometry
 )
 expected_geometry_index1 = Geometry([coord2, coord1, coord2, coord1])
-geometry_index1_das_translation = [
+geometry_index1_mapbox_translation = [
     {"lat": lat2, "lon": lng2},
     {"lat": lat1, "lon": lng1},
     {"lat": lat2, "lon": lng2},
@@ -37,15 +37,15 @@ expected_route_index1 = Route(
     geometry=expected_geometry_index1,
 )
 
-das_response = {
+mapbox_response = {
     "routes": [
         {
-            "legs": [{"geometry": geometry_das_translation}],
+            "legs": [{"geometry": geometry_mapbox_translation}],
             "totalDistance": expected_distance,
             "totalDuration": expected_duration,
         },
         {
-            "legs": [{"geometry": geometry_index1_das_translation}],
+            "legs": [{"geometry": geometry_index1_mapbox_translation}],
             "totalDistance": expected_distance_index1,
             "totalDuration": expected_duration_index1,
         },
@@ -96,7 +96,7 @@ route_plan = RoutePlan(
     strategy="FASTEST",
 )
 
-das_request_payload = {
+mapbox_request_payload = {
     "locations": [
         {"lon": start_lng, "lat": start_lat},
         {"lon": end_lng, "lat": end_lat},
@@ -104,8 +104,8 @@ das_request_payload = {
     "reportGeometry": True,
 }
 
-das_car_url = "https://routing.develop.otonomousmobility.com/car/v1/route"
-das_car_traffic_url = (
+mapbox_car_url = "https://routing.develop.otonomousmobility.com/car/v1/route"
+mapbox_car_traffic_url = (
     "https://routing.develop.otonomousmobility.com/car-traffic/v1/route"
 )
 
@@ -119,7 +119,7 @@ google_car_url_multiple_waypoints = ""
 
 
 @pytest.fixture()
-def setup_das_router_environment(mocker):
+def setup_mapbox_router_environment(mocker):
     json_response_mock = Mock()
     response_mock = Mock(
         json=Mock(return_value=json_response_mock), elapsed=Mock(microseconds=100)
@@ -127,8 +127,8 @@ def setup_das_router_environment(mocker):
     mocker.patch("requests.post", return_value=response_mock)
     route_mock = Mock()
     adapter_instance_mock = Mock(get_route=Mock(return_value=route_mock))
-    adapter_mock = Mock(DasResponseAdapter, return_value=adapter_instance_mock)
-    mocker.patch("das.routing.services.routing.DasResponseAdapter", adapter_mock)
+    adapter_mock = Mock(MapboxResponseAdapter, return_value=adapter_instance_mock)
+    mocker.patch("locintel.services.routing.MapboxResponseAdapter", adapter_mock)
     return {
         "json_response_mock": json_response_mock,
         "response_mock": response_mock,
@@ -148,7 +148,7 @@ def setup_google_router_environment(mocker):
     route_mock = Mock()
     adapter_instance_mock = Mock(get_route=Mock(return_value=route_mock))
     adapter_mock = Mock(GoogleResponseAdapter, return_value=adapter_instance_mock)
-    mocker.patch("das.routing.services.routing.GoogleResponseAdapter", adapter_mock)
+    mocker.patch("locintel.services.routing.GoogleResponseAdapter", adapter_mock)
     return {
         "json_response_mock": json_response_mock,
         "response_mock": response_mock,

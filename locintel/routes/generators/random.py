@@ -5,7 +5,7 @@ import random
 
 from shapely.geometry import Polygon
 
-from das.routing.core.datamodel.routing import RoutePlan, Waypoint
+from locintel.core.datamodel.routing import RoutePlan, Waypoint
 
 polygons = {
     "berlin": Polygon(

@@ -1,6 +1,6 @@
 from importlib import import_module
 
-from das.routing.graphs.masks.apply.osm import ApplyMaskOsmMixin
+from locintel.graphs.masks.apply.osm import ApplyMaskOsmMixin
 
 import pytest
 

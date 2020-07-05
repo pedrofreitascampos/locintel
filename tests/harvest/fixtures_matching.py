@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock
 
-das_match_response = {
+mapbox_match_response = {
     "code": "Ok",
     "matchNumber": 1,
     "matchings": [
@@ -37,9 +37,9 @@ das_match_response = {
 
 
 @pytest.fixture()
-def setup_das_matcher_environment(mocker):
+def setup_mapbox_matcher_environment(mocker):
     response_mock = Mock(
-        json=Mock(return_value=das_match_response), elapsed=Mock(microseconds=100)
+        json=Mock(return_value=mapbox_match_response), elapsed=Mock(microseconds=100)
     )
     mocker.patch("requests.post", return_value=response_mock)
     expected_match = Mock(
@@ -57,7 +57,7 @@ def setup_das_matcher_environment(mocker):
             "confidence": 0.9,
             "max_snap_distance": 2,
             "failed_points": 1,
-            "raw": das_match_response,
+            "raw": mapbox_match_response,
         },
     )
     return {"response_mock": response_mock, "expected_match": expected_match}

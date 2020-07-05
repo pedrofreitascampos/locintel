@@ -1,7 +1,7 @@
 from itertools import chain, product
 
-from das.routing.core.datamodel.geo import GeoCoordinate
-from das.routing.graphs.datamodel.jurbey import Jurbey, Node
+from locintel.core.datamodel.geo import GeoCoordinate
+from locintel.graphs.datamodel.jurbey import Jurbey, Node
 
 from tests.synthetic.utils import (
     create_edge,

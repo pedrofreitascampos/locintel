@@ -3,7 +3,7 @@ import itertools
 import os
 from pydruid.client import PyDruid
 
-from das.routing.core.datamodel.traces import Trace, Probe
+from locintel.core.datamodel.traces import Trace, Probe
 
 
 class BaseLoader(object):

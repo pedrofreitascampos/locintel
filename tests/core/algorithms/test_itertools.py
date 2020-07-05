@@ -1,4 +1,4 @@
-from das.routing.core.algorithms.itertools import (
+from locintel.core.algorithms.itertools import (
     window,
     pairwise,
     tripletwise,

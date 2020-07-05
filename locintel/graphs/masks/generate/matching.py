@@ -1,9 +1,9 @@
 import logging
 
-from das.routing.core.algorithms.itertools import pairwise, tripletwise
-from das.routing.core.datamodel.matching import MatchPlan, MatchWaypoint
-from das.routing.quality.metrics.geometry import GeometryComparator
-from das.routing.services.matching import DasMatcher
+from locintel.core.algorithms.itertools import pairwise, tripletwise
+from locintel.core.datamodel.matching import MatchPlan, MatchWaypoint
+from locintel.quality.metrics.geometry import GeometryComparator
+from locintel.services.matching import MapboxMatcher
 
 
 from .base import BaseMaskGenerator
@@ -19,7 +19,7 @@ class RouteMatchingMaskGenerator(BaseMaskGenerator):
     def __init__(
         self,
         odd_graph,
-        matcher=DasMatcher,
+        matcher=MapboxMatcher,
         paths_generator=PathsGenerator,
         lanes_threshold=None,
         timestamps_speed=None,

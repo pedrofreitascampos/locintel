@@ -89,7 +89,7 @@ def calculate_angle(a, b, c):
     """
     Returns angle (a-b-c), in degrees
 
-    All points are assumed to be das.routing.core.datamodel.geo.GeoCoordinate objects
+    All points are assumed to be locintel.core.datamodel.geo.GeoCoordinate objects
     """
     b_c = math.sqrt((b.lng - c.lng) ** 2 + (b.lat - c.lat) ** 2)
     a_c = math.sqrt((a.lng - c.lng) ** 2 + (a.lat - c.lat) ** 2)
@@ -136,8 +136,8 @@ def frechet_distance(geo1, geo2, i=0, j=0, distance_matrix=None):
 
     Algorithm: http://www.kr.tuwien.ac.at/staff/eiter/et-archive/cdtr9464.pdf
 
-    :param geo1: das.routing.core.datamodel.geo.Geometry object 1
-    :param geo2: das.routing.core.datamodel.geo.Geometry object 2
+    :param geo1: locintel.core.datamodel.geo.Geometry object 1
+    :param geo2: locintel.core.datamodel.geo.Geometry object 2
     :param i: index for geo1 traversal
     :param j: index for geo2 traversal
     :param distance_matrix: distance matrix between geo1 points and geo2 points (None for initialization)

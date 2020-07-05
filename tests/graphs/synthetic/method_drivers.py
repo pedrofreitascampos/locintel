@@ -13,11 +13,11 @@ from copy import deepcopy
 import glob
 import os
 
-from das.routing.graphs.datamodel.jurbey import Jurbey
-from das.routing.graphs.adapters.osm import OsmAdapter
-from das.routing.graphs.masks.apply.osm import ApplyMaskOsmMixin
-from das.routing.graphs.masks.generate.matching import RouteMatchingMaskGenerator
-from das.routing.services.matching import DasMatcher
+from locintel.graphs.datamodel.jurbey import Jurbey
+from locintel.graphs.adapters.osm import OsmAdapter
+from locintel.graphs.masks.apply.osm import ApplyMaskOsmMixin
+from locintel.graphs.masks.generate.matching import RouteMatchingMaskGenerator
+from locintel.services.matching import MapboxMatcher
 
 from .setup_utils import start_routing_server, stop_container
 
@@ -111,7 +111,7 @@ class RouteMatchingMethodDriver(BaseODDMethodDriver):
         """
         odd_graph = Jurbey.from_pickle(odd_artifact)
         graph_matcher = RouteMatchingMaskGenerator(
-            odd_graph, DasMatcher(endpoint=base_artifact), hd_mapping=False
+            odd_graph, MapboxMatcher(endpoint=base_artifact), hd_mapping=False
         )
         mask = graph_matcher.generate()
         adapter = OsmAdapter(self.base_map_filename, processors=ApplyMaskOsmMixin)

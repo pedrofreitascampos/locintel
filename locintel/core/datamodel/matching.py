@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from das.routing.core.datamodel.geo import GeoCoordinate
+from locintel.core.datamodel.geo import GeoCoordinate
 
 
 class MatchWaypoint(GeoCoordinate):

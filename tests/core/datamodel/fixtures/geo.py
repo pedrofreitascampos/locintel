@@ -2,7 +2,7 @@ from geojson import FeatureCollection, Feature, LineString, MultiPoint
 import pytest
 from unittest.mock import Mock
 
-from das.routing.core.datamodel.geo import Geometry, GeoCoordinate
+from locintel.core.datamodel.geo import Geometry, GeoCoordinate
 
 
 @pytest.fixture

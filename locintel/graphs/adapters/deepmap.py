@@ -1,7 +1,7 @@
 from copy import copy
 import json
 
-from das.routing.core.datamodel.geo import GeoCoordinate
+from locintel.core.datamodel.geo import GeoCoordinate
 
 from .base import BaseAdapter
 from ..datamodel.jurbey import Edge, Node

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from unittest.mock import Mock, PropertyMock
 
-expected_route_name = "das-1"
+expected_route_name = "mapbox-1"
 expected_duration = 123
 expected_distance = 126
 expected_geometry = [
@@ -28,10 +28,10 @@ expected_route_plan_2 = {
     "waypoints": [[3.5, 1.11], [112.11, 35.5]],
 }
 expected_provider = {
-    "name": "das",
-    "api": "das",
+    "name": "mapbox",
+    "api": "mapbox",
     "type": "router",
-    "params": {"vehicle": "car", "strategy": "fastest", "endpoint": "routing.das.car"},
+    "params": {"vehicle": "car", "strategy": "fastest", "endpoint": "routing.mapbox.car"},
 }
 expected_provider_google = {
     "name": "google",
@@ -56,7 +56,7 @@ expected_metadata = {
     "test_run": expected_test_run,
 }
 
-route_das = {
+route_mapbox = {
     "name": expected_route_name,
     "date": expected_date,
     "duration": expected_duration,
@@ -68,26 +68,26 @@ route_das = {
     "testRun": expected_test_run,
 }
 
-route_das_older = {
-    "name": "das-1old",
+route_mapbox_older = {
+    "name": "mapbox-1old",
     "date": datetime(2019, 1, 1, 0, 0),
     "duration": 129,
     "distance": 135,
     "calcTime": 0.22,
     "geometry": [[34.5, 12.11], [34.6, 12.12], [34.7, 12.15], [34.8, 12.14]],
-    "provider": {"name": "Das", "type": "routing", "url": "routing.das.car"},
+    "provider": {"name": "Mapbox", "type": "routing", "url": "routing.mapbox.car"},
     "routePlan": expected_route_plan,
     "testRun": expected_test_run,
 }
 
-route_das_2 = {
-    "name": "das-2",
+route_mapbox_2 = {
+    "name": "mapbox-2",
     "date": datetime(2019, 1, 1, 1, 0),
     "duration": 123,
     "distance": 126,
     "calcTime": 1.2,
     "geometry": [[34.5, 12.11], [34.8, 12.14]],
-    "provider": {"name": "Das", "type": "routing", "url": "routing.das.car"},
+    "provider": {"name": "Mapbox", "type": "routing", "url": "routing.mapbox.car"},
     "routePlan": expected_route_plan_2,
     "testRun": expected_test_run_2,
 }

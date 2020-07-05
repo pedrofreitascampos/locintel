@@ -4,7 +4,7 @@ import itertools
 import numpy as np
 from typing import Sequence
 
-from das.routing.core.datamodel.routing import Route, RoutePlan
+from locintel.core.datamodel.routing import Route, RoutePlan
 
 
 @dataclass
@@ -14,8 +14,8 @@ class TestResult(object):
         Container class for a routing experiment, for several providers. It assumes 1 RoutePlan -> 1+ Route
 
         :param name: test name
-        :param plan: original route plan, as das.routing.core.datamodel.routing.RoutePlan object
-        :param routes: route results as dict with providers as keys (e.g. routes={'das':
+        :param plan: original route plan, as locintel.core.datamodel.routing.RoutePlan object
+        :param routes: route results as dict with providers as keys (e.g. routes={'mapbox':
         :param metrics: metrics associated to test, as dict, these are usually comparative between included routes,
                         for example, like route geometry comparison
         """

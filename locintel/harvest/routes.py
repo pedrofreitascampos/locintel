@@ -4,9 +4,9 @@ import itertools
 import multiprocessing
 import requests
 
-from das.routing.core.datamodel.geo import Geometry
-from das.routing.core.datamodel.routing import Route
-from das.routing.core.datamodel.testing import TestResult, ExperimentResult
+from locintel.core.datamodel.geo import Geometry
+from locintel.core.datamodel.routing import Route
+from locintel.core.datamodel.testing import TestResult, ExperimentResult
 
 
 class AbstractRouter(object):
@@ -19,24 +19,24 @@ class AbstractRouter(object):
         raise NotImplementedError("Please implement subclass method")
 
 
-class DasRouter(AbstractRouter):
+class MapboxRouter(AbstractRouter):
     def __init__(
         self,
-        endpoint="https://routing.develop.otonomousmobility.com/{vehicle_type}/v1/route",
+        endpoint="",
         user=None,
         password=None,
         traffic=False,
         adapter=None,
     ):
-        adapter = adapter or DasResponseAdapter
+        adapter = adapter or MapboxResponseAdapter
         super().__init__(endpoint, adapter)
         self.user = user
         self.password = password
         self.traffic = traffic
-        self.name = "das-routing-traffic" if traffic else "das-routing"
+        self.name = "mapbox-routing-traffic" if traffic else "mapbox-routing"
 
     def calculate(self, route_plan, **kwargs):
-        payload = DasRouter._generate_payload(route_plan, **kwargs)
+        payload = MapboxRouter._generate_payload(route_plan, **kwargs)
         url = self.endpoint.format(
             vehicle_type=route_plan.vehicle.lower()
             + ("-traffic" if self.traffic else "")
@@ -126,7 +126,7 @@ class AbstractResponseAdapter(object):
         raise NotImplementedError("Please implement subclass method")
 
 
-class DasResponseAdapter(AbstractResponseAdapter):
+class MapboxResponseAdapter(AbstractResponseAdapter):
     def __init__(self, response):
         super().__init__(response)
 
@@ -216,9 +216,9 @@ class GoogleResponseAdapter(AbstractResponseAdapter):
 
 # FROM HERE ONWARDS LIES SYNTACTIC SUGAR
 ROUTERS = {
-    "das": DasRouter,
+    "mapbox": MapboxRouter,
     "google": GoogleRouter,
-    "das-traffic": functools.partial(DasRouter, traffic=True),
+    "mapbox-traffic": functools.partial(MapboxRouter, traffic=True),
 }
 
 

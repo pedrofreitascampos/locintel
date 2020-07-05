@@ -1,4 +1,4 @@
-from das.routing.graphs.processing.utils import (
+from locintel.graphs.processing.utils import (
     get_nodes_list,
     find_common_node,
     get_adjacent_node,

@@ -3,8 +3,8 @@ import shapely.geometry as sg
 import pytest
 from unittest.mock import Mock, MagicMock
 
-from das.routing.quality.metrics.geometry import GeometryComparator
-from das.routing.core.datamodel.geo import Geometry
+from locintel.quality.metrics.geometry import GeometryComparator
+from locintel.core.datamodel.geo import Geometry
 
 
 class TestGeometryComparator(object):
@@ -87,7 +87,7 @@ class TestGeometryComparator(object):
             Mock(Geometry, __len__=lambda _: len2),
         )
         mocker.patch(
-            "das.routing.quality.metrics.geometry.frechet_distance",
+            "locintel.quality.metrics.geometry.frechet_distance",
             return_value=distance,
         )
 
@@ -99,7 +99,7 @@ class TestGeometryComparator(object):
         distance = 5
         geo1, geo2 = Mock(Geometry), Mock(Geometry)
         mocker.patch(
-            "das.routing.quality.metrics.geometry.dtw", return_value=[distance]
+            "locintel.quality.metrics.geometry.dtw", return_value=[distance]
         )
 
         result = GeometryComparator.compare_dtw(geo1, geo2)
@@ -173,11 +173,11 @@ class TestGeometryComparator(object):
         auc = 4
         bocs = 5  # math.sqrt(3**2 + 4**2)
         mocker.patch(
-            "das.routing.quality.metrics.geometry.GeometryComparator.compare_hausdorff",
+            "locintel.quality.metrics.geometry.GeometryComparator.compare_hausdorff",
             return_value=hausdorff,
         )
         mocker.patch(
-            "das.routing.quality.metrics.geometry.GeometryComparator.compare_auc",
+            "locintel.quality.metrics.geometry.GeometryComparator.compare_auc",
             return_value=auc,
         )
         geo1, geo2 = Mock(Geometry), Mock(Geometry)
@@ -256,7 +256,7 @@ class TestGeometryComparator(object):
         levenshtein = 10
         levenshtein_mock = Mock(return_value=levenshtein)
         mocker.patch(
-            "das.routing.quality.metrics.geometry.levenshtein_distance",
+            "locintel.quality.metrics.geometry.levenshtein_distance",
             side_effect=levenshtein_mock,
         )
         poly1, poly2 = Mock(), Mock()

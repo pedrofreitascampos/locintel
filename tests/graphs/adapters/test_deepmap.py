@@ -1,7 +1,7 @@
 import builtins
 import json
 
-from das.routing.graphs.adapters.deepmap import DeepmapAdapter
+from locintel.graphs.adapters.deepmap import DeepmapAdapter
 
 import pytest
 

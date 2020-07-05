@@ -1,4 +1,4 @@
-from das.routing.traces.filters import LowConfidenceFilter, TimeGapFilter
+from locintel.traces.filters import LowConfidenceFilter, TimeGapFilter
 
 import pytest
 

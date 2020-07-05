@@ -2,9 +2,9 @@ from copy import deepcopy
 import multiprocessing
 import requests
 
-from das.routing.core.datamodel.testing import TestResult, ExperimentResult
-from das.routing.services.routing import (
-    DasRouter,
+from locintel.core.datamodel.testing import TestResult, ExperimentResult
+from locintel.services.routing import (
+    MapboxRouter,
     GoogleRouter,
     calculate,
     calculate_competitive,
@@ -16,65 +16,65 @@ from unittest.mock import call
 from tests.fixtures_routing import *
 
 
-class TestDasResponseAdapter(object):
+class TestMapboxResponseAdapter(object):
     def test_get_geometry(self):
-        result = DasResponseAdapter(das_response).get_geometry()
+        result = MapboxResponseAdapter(mapbox_response).get_geometry()
 
         assert isinstance(result, Geometry)
         assert result.coords == expected_geometry.coords
 
     def test_get_geometry_by_route_index(self):
-        result = DasResponseAdapter(das_response).get_geometry(index=1)
+        result = MapboxResponseAdapter(mapbox_response).get_geometry(index=1)
 
         assert isinstance(result, Geometry)
         assert result.coords == expected_geometry_index1.coords
 
     def test_get_geometry_raises_value_error_when_no_geometry_found(self):
         with pytest.raises(ValueError):
-            DasResponseAdapter({}).get_geometry()
+            MapboxResponseAdapter({}).get_geometry()
 
     def test_get_geometry_raises_value_error_when_geometry_empty(self):
         with pytest.raises(ValueError):
-            DasResponseAdapter(das_response).get_geometry(
+            MapboxResponseAdapter(mapbox_response).get_geometry(
                 index=2
             )  # empty geo in fixtures with index=2
 
     def test_get_length(self):
-        result = DasResponseAdapter(das_response).get_distance()
+        result = MapboxResponseAdapter(mapbox_response).get_distance()
 
         assert result == expected_distance
 
     def test_get_length_by_route_index(self):
-        result = DasResponseAdapter(das_response).get_distance(index=1)
+        result = MapboxResponseAdapter(mapbox_response).get_distance(index=1)
 
         assert result == expected_distance_index1
 
     def test_get_length_raises_value_error_when_no_length_found(self):
         with pytest.raises(ValueError):
-            DasResponseAdapter({}).get_distance()
+            MapboxResponseAdapter({}).get_distance()
 
     def test_get_duration(self):
-        result = DasResponseAdapter(das_response).get_duration()
+        result = MapboxResponseAdapter(mapbox_response).get_duration()
 
         assert result == expected_duration
 
     def test_get_duration_by_route_index(self):
-        result = DasResponseAdapter(das_response).get_duration(index=1)
+        result = MapboxResponseAdapter(mapbox_response).get_duration(index=1)
 
         assert result == expected_duration_index1
 
     def test_get_duration_raises_value_error_when_no_length_found(self):
         with pytest.raises(ValueError):
-            DasResponseAdapter({}).get_duration()
+            MapboxResponseAdapter({}).get_duration()
 
     def test_get_route(self):
-        result = DasResponseAdapter(das_response).get_route()
+        result = MapboxResponseAdapter(mapbox_response).get_route()
 
         assert isinstance(result, Route)
         assert result == expected_route
 
     def test_get_route_by_route_index(self):
-        result = DasResponseAdapter(das_response).get_route(index=1)
+        result = MapboxResponseAdapter(mapbox_response).get_route(index=1)
 
         assert isinstance(result, Route)
         assert result == expected_route_index1
@@ -84,7 +84,7 @@ class TestGoogleResponseAdapter(object):
     def test_get_geometry(self, mocker):
         from_polyline_mock = Mock(return_value=expected_geometry)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_polyline",
+            "locintel.core.datamodel.geo.Geometry.from_polyline",
             side_effect=from_polyline_mock,
         )
 
@@ -97,7 +97,7 @@ class TestGoogleResponseAdapter(object):
     def test_get_geometry_by_route_index(self, mocker):
         from_polyline_mock = Mock(return_value=expected_geometry_index1)
         mocker.patch(
-            "das.routing.core.datamodel.geo.Geometry.from_polyline",
+            "locintel.core.datamodel.geo.Geometry.from_polyline",
             side_effect=from_polyline_mock,
         )
         result = GoogleResponseAdapter(google_response).get_geometry(index=1)
@@ -157,76 +157,76 @@ class TestGoogleResponseAdapter(object):
         assert result == expected_route_index1
 
 
-class TestDasRouter(object):
-    def test_das_router(self, setup_das_router_environment):
-        mocks = setup_das_router_environment
+class TestMapboxRouter(object):
+    def test_mapbox_router(self, setup_mapbox_router_environment):
+        mocks = setup_mapbox_router_environment
         username = "username"
         password = "password"
 
-        result = DasRouter(user=username, password=password).calculate(route_plan)
+        result = MapboxRouter(user=username, password=password).calculate(route_plan)
 
         assert result == mocks["route_mock"]
         requests.post.assert_called_with(
-            das_car_url, json=das_request_payload, auth=(username, password)
+            mapbox_car_url, json=mapbox_request_payload, auth=(username, password)
         )
         mocks["response_mock"].json.assert_called()
         mocks["adapter_mock"].assert_called_with(mocks["json_response_mock"])
         mocks["adapter_instance_mock"].get_route.assert_called()
 
-    def test_multiple_waypoints(self, setup_das_router_environment):
-        mocks = setup_das_router_environment
+    def test_multiple_waypoints(self, setup_mapbox_router_environment):
+        mocks = setup_mapbox_router_environment
         rp = deepcopy(route_plan)
         rp.intermediate_waypoints = [Waypoint(start_lat, end_lng)]
-        payload = deepcopy(das_request_payload)
+        payload = deepcopy(mapbox_request_payload)
         payload["locations"].insert(1, {"lon": end_lng, "lat": start_lat}),
 
-        result = DasRouter().calculate(rp)
+        result = MapboxRouter().calculate(rp)
 
         assert result == mocks["route_mock"]
-        requests.post.assert_called_with(das_car_url, json=payload, auth=(None, None))
+        requests.post.assert_called_with(mapbox_car_url, json=payload, auth=(None, None))
         mocks["response_mock"].json.assert_called()
         mocks["adapter_mock"].assert_called_with(mocks["json_response_mock"])
         mocks["adapter_instance_mock"].get_route.assert_called()
 
-    def test_traffic(self, setup_das_router_environment):
-        mocks = setup_das_router_environment
+    def test_traffic(self, setup_mapbox_router_environment):
+        mocks = setup_mapbox_router_environment
 
-        result = DasRouter(traffic=True).calculate(route_plan)
+        result = MapboxRouter(traffic=True).calculate(route_plan)
 
         assert result == mocks["route_mock"]
         requests.post.assert_called_with(
-            das_car_traffic_url, json=das_request_payload, auth=(None, None)
+            mapbox_car_traffic_url, json=mapbox_request_payload, auth=(None, None)
         )
         mocks["response_mock"].json.assert_called()
         mocks["adapter_mock"].assert_called_with(mocks["json_response_mock"])
         mocks["adapter_instance_mock"].get_route.assert_called()
 
-    def test_kwargs(self, setup_das_router_environment):
-        mocks = setup_das_router_environment
+    def test_kwargs(self, setup_mapbox_router_environment):
+        mocks = setup_mapbox_router_environment
 
-        new_payload = deepcopy(das_request_payload)
+        new_payload = deepcopy(mapbox_request_payload)
         new_payload.update({"arg1": 1})
 
-        result = DasRouter().calculate(route_plan, arg1=1)
+        result = MapboxRouter().calculate(route_plan, arg1=1)
 
         assert result == mocks["route_mock"]
         requests.post.assert_called_with(
-            das_car_url, json=new_payload, auth=(None, None)
+            mapbox_car_url, json=new_payload, auth=(None, None)
         )
         mocks["response_mock"].json.assert_called()
         mocks["adapter_mock"].assert_called_with(mocks["json_response_mock"])
         mocks["adapter_instance_mock"].get_route.assert_called()
 
-    def test_host(self, setup_das_router_environment):
-        mocks = setup_das_router_environment
+    def test_host(self, setup_mapbox_router_environment):
+        mocks = setup_mapbox_router_environment
         hostname = "hostname/{vehicle_type}/v2"
         expected_url = hostname.format(vehicle_type="car")
 
-        result = DasRouter(endpoint=hostname).calculate(route_plan)
+        result = MapboxRouter(endpoint=hostname).calculate(route_plan)
 
         assert result == mocks["route_mock"]
         requests.post.assert_called_with(
-            expected_url, json=das_request_payload, auth=(None, None)
+            expected_url, json=mapbox_request_payload, auth=(None, None)
         )
         mocks["response_mock"].json.assert_called()
         mocks["adapter_mock"].assert_called_with(mocks["json_response_mock"])
@@ -289,7 +289,7 @@ class TestCalculate(object):
     def test_calculate(self, mocker, setup_calculate_route_environment):
         mocks = setup_calculate_route_environment
         d = {"provider": mocks["router_mock"]}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
 
         result = calculate(route_plan, mocks["router_mock"].name)
 
@@ -301,7 +301,7 @@ class TestCalculate(object):
     def test_calculate_accepts_kwargs(self, mocker, setup_calculate_route_environment):
         mocks = setup_calculate_route_environment
         d = {"provider": mocks["router_mock"]}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         kwargs = {"arg1": 1}
 
         result = calculate(route_plan, mocks["router_mock"].name, **kwargs)
@@ -320,7 +320,7 @@ class TestCalculateCompetitive(object):
         router_1 = mocks[0]["router_mock"]
         router_2 = mocks[1]["router_mock"]
         d = {"provider1": router_1, "provider2": router_2}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         routers = [router_1.name, router_2.name]
 
         result = calculate_competitive(route_plan, routers)
@@ -343,7 +343,7 @@ class TestCalculateCompetitive(object):
         router_1 = mocks[0]["router_mock"]
         router_2 = mocks[1]["router_mock"]
         d = {"provider1": router_1, "provider2": router_2}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         ROUTERS = [mock["router_mock"].name for mock in mocks]
         rp = deepcopy(route_plan)
         rp.name = "name"
@@ -370,7 +370,7 @@ class TestCalculateCompetitive(object):
         router_1 = mocks[0]["router_mock"]
         router_2 = mocks[1]["router_mock"]
         d = {"provider1": router_1, "provider2": router_2}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         ROUTERS = [mock["router_mock"].name for mock in mocks]
         expected_metrics = {
             f"comparator1_{ROUTERS[0]}_vs_{ROUTERS[1]}": score1,
@@ -424,7 +424,7 @@ class TestCalculateCompetitive(object):
         router_2 = mocks[1]["router_mock"]
         router_3 = mocks[2]["router_mock"]
         d = {"provider1": router_1, "provider2": router_2, "provider3": router_3}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         ROUTERS = [mock["router_mock"].name for mock in mocks]
         expected_metrics = {
             f"comparator1_{ROUTERS[0]}_vs_{ROUTERS[1]}": score1_1vs2,
@@ -465,11 +465,11 @@ class TestCalculateCompetitive(object):
         self, mocker, setup_calculate_competitive_environment
     ):
         mocks = setup_calculate_competitive_environment
-        mocker.patch("das.routing.core.datamodel.geo.Geometry.to_geojson")
+        mocker.patch("locintel.core.datamodel.geo.Geometry.to_geojson")
         router_1 = mocks[0]["router_mock"]
         router_2 = mocks[1]["router_mock"]
         d = {"provider1": router_1, "provider2": router_2}
-        mocker.patch.dict("das.routing.services.routing.ROUTERS", d, clear=True)
+        mocker.patch.dict("locintel.services.routing.ROUTERS", d, clear=True)
         ROUTERS = [mock["router_mock"].name for mock in mocks]
         output_dir = "output"
         rp = deepcopy(route_plan)
