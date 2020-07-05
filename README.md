@@ -4,13 +4,17 @@
 
 ## Featured modules
 
-### datamodel: unambiguous abstractions for location intelligence entities + converters  
+### datamodel
 
-Avoid implementing boilerplate geospatial classes such as `GeoPoint`, `Point` or `Route` (and conversions to/from popular formats like GeoJson) across your organziation's codebase, and furthermore establish and agree on fixed semantics for each entity in the domain, for free-flowing and unambiguous discoure and discussions with peers. 
+Unambiguous abstractions for location intelligence entities + converters. 
 
-### algorithms: efficient procedures for projection-aware processing and transformation of location entities (e.g. routes)
+Avoid implementing boilerplate geospatial classes such as `GeoPoint`, `Point` or `Route` (and conversions to/from popular formats like GeoJson) across your organziation's codebase.
 
-_No need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopandas` 
+Furthermore establish and agree on fixed semantics for each entity in the domain, for free-flowing and unambiguous discoure and discussions with peers. 
+
+### algorithms
+
+Efficient procedures for projection-aware processing and transformation of location entities (e.g. routes) - no need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopandas`. 
 
 __Example: add noise to Geometry__
 
@@ -31,9 +35,9 @@ plt.scatter(*zip(*geo_very_noisy.to_lng_lat_tuples()), s=1, c='r')
 ![noisy-geo](_img/noisy_geo.png) 
 
 
-### harvest: easy-to-use interfaces to harvest data from variety of services (e.g. google/bing routing, matching, geocoding, etc.) 
+### harvest
 
-_Be free from crunching and managing API semantics into `urlllib` or `requests` calls_
+Easy-to-use interfaces to harvest data from variety of services (e.g. google/bing routing, matching, geocoding, etc.) - be free from crunching and managing API semantics into `urlllib` or `requests` calls.
 
 __Example: Harvest route__
 
@@ -75,7 +79,9 @@ das_route.geometry.to_geojson()
 das_route.geometry.to_poyline()
 ```
 
-### analytics: quality assessment suite for location intelligence products like routes and respective travel times
+### quality
+
+Analytics suite for quality of location intelligence products like routes and respective travel times.
 
 __Example: Generate random route plan in polygon__
 
@@ -126,7 +132,7 @@ results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_di
 results.to_csv('results.csv')
 ```
 
-## Dismbiguation 
+## Disambiguation 
 
 With the wealth of geospatial library out there, it is important to underline what this library is __not__ intended to be:
 * A full-featured geospatial data abstraction layer library, [GDAL](https://gdal.org/) is a much better option if you need that
