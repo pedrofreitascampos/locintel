@@ -1,8 +1,6 @@
 # locintel
 
-__locintel__ is a <b>loc</b>ation <b>intel</b>ligence Python library focusing on easy and efficient map, routing and GPS/trace data collection, processing, analysis and learning.
-
-Have fun!
+<b>loc</b>ation <b>intel</b>ligence focuses on easy and efficient map, routing and GPS/trace data collection, processing, analysis and learning.
 
 ## Featured modules
 
