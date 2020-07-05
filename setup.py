@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="geotools",
+    name="locintel",
     version_format="0.9",
     setup_requires=["very-good-setuptools-git-version"],
     author="Pedro Campos",

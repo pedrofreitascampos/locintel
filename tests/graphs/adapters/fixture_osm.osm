@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="libosmium/2.15.0">
+  <node id="1" version="1" lat="0" lon="-1"/>
+  <node id="2" version="1" lat="0" lon="0"/>
+  <node id="3" version="1" lat="0" lon="1"/>
+  <node id="4" version="1" lat="0" lon="2"/>
+  <node id="5" version="1" lat="0" lon="3"/>
+  <node id="6" version="1" lat="2" lon="0"/>
+  <node id="7" version="1" lat="1" lon="1"/>
+  <node id="8" version="1" lat="-1" lon="0"/>
+  <node id="9" version="1" lat="-2" lon="0"/>
+  <node id="10" version="1" lat="-1" lon="2"/>
+  <node id="11" version="1" lat="0" lon="4"/>
+  <node id="12" version="1" lat="-2" lon="4"/>
+  <node id="13" version="1" lat="-2" lon="2"/>
+  <node id="14" version="1" lat="1" lon="4"/>
+  <node id="15" version="1" lat="1" lon="3"/>
+  <way id="1" version="1">
+    <nd ref="1"/>
+    <nd ref="2"/>
+    <nd ref="3"/>
+    <nd ref="4"/>
+    <tag k="highway" v="primary"/>
+  </way>
+  <way id="2" version="1">
+    <nd ref="4"/>
+    <nd ref="5"/>
+    <nd ref="11"/>
+    <tag k="highway" v="primary"/>
+  </way>
+  <way id="3" version="1">
+    <nd ref="6"/>
+    <nd ref="2"/>
+    <nd ref="8"/>
+    <nd ref="9"/>
+    <tag k="highway" v="primary"/>
+    <tag k="oneway" v="yes"/>
+  </way>
+  <way id="4" version="1">
+    <nd ref="3"/>
+    <nd ref="7"/>
+    <tag k="highway" v="residential"/>
+    <tag k="oneway" v="yes"/>
+  </way>
+  <way id="5" version="1">
+    <nd ref="4"/>
+    <nd ref="10"/>
+    <nd ref="13"/>
+    <nd ref="12"/>
+    <nd ref="11"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="6" version="1">
+    <nd ref="5"/>
+    <nd ref="15"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <way id="7" version="1">
+    <nd ref="11"/>
+    <nd ref="14"/>
+    <tag k="highway" v="residential"/>
+  </way>
+  <relation id="1" version="1">
+    <member type="way" ref="5" role="from"/>
+    <member type="node" ref="4" role="via"/>
+    <member type="way" ref="2" role="to"/>
+    <tag k="type" v="restriction"/>
+    <tag k="restriction" v="no_right_turn"/>
+  </relation>
+  <relation id="2" version="1">
+    <member type="way" ref="7" role="from"/>
+    <member type="way" ref="2" role="via"/>
+    <member type="way" ref="5" role="to"/>
+    <tag k="type" v="restriction"/>
+    <tag k="restriction" v="no_straight_on"/>
+  </relation>
+</osm>

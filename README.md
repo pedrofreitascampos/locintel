@@ -4,7 +4,7 @@
 
 ## Featured modules
 
-### datamodel
+### core: datamodel
 
 Unambiguous abstractions for location intelligence entities + converters. 
 
@@ -12,14 +12,14 @@ Avoid implementing boilerplate geospatial classes such as `GeoPoint`, `Point` or
 
 Furthermore establish and agree on fixed semantics for each entity in the domain, for free-flowing and unambiguous discoure and discussions with peers. 
 
-### algorithms
+### core: algorithms
 
 Efficient procedures for projection-aware processing and transformation of location entities (e.g. routes) - no need to stack `pyproj` over `shapely` or to depend on the heavy machinery introduced by `geopandas`. 
 
 __Example: add noise to Geometry__
 
 ```python
-from geotools.datamodel.geo import Geometry
+from locintel.core.datamodel.geo import Geometry
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -34,16 +34,15 @@ plt.scatter(*zip(*geo_very_noisy.to_lng_lat_tuples()), s=1, c='r')
 
 ![noisy-geo](_img/noisy_geo.png) 
 
-
 ### harvest
 
 Easy-to-use interfaces to harvest data from variety of services (e.g. google/bing routing, matching, geocoding, etc.) - be free from crunching and managing API semantics into `urlllib` or `requests` calls.
 
-__Example: Harvest route__
+__Example: harvest route__
 
 ```python
-from geotools.datamodel.routing import RoutePlan, WayPoint
-from geotools.services.routing import calculate
+from locintel.core.datamodel.routing import RoutePlan, WayPoint
+from locintel.harvest.routes import calculate
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
 das = calculate(rp, 'das')
@@ -60,11 +59,11 @@ das.geometry.to_geojson()
 das.geometry.to_poyline()
 ```
 
-__Example: Harvest route (more control)__
+__Example: harvest route (more control)__
 
 ```python
-from geotools.datamodel.routing import RoutePlan, WayPoint
-from geotools.services.routing import DasRouter, GoogleRouter
+from locintel.core.datamodel.routing import RoutePlan, WayPoint
+from locintel.harvest.routes import DasRouter, GoogleRouter
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
 das_route = DasRouter(username='username', password='password').calculate(rp)
@@ -79,14 +78,14 @@ das_route.geometry.to_geojson()
 das_route.geometry.to_poyline()
 ```
 
-### quality
+### routes
 
-Analytics suite for quality of location intelligence products like routes and respective travel times.
+Suite of tools for processing and analysis of routes and respective travel times.
 
-__Example: Generate random route plan in polygon__
+__Example: generate random route plan in polygon__
 
 ```python
-from geotools.routes.quality import RandomRouteGenerator
+from locintel.routes.generators import RandomRouteGenerator
 import shapely.geometry as sg
 
 berlin = sg.Polygon([(13.281949, 52.542348), (13.509650, 52.542348), 
@@ -95,11 +94,11 @@ berlin = sg.Polygon([(13.281949, 52.542348), (13.509650, 52.542348),
 rp = RandomRouteGenerator().generate_route(polygon=berlin)
 ```
 
-__Example: Compare two geometries__
+__Example: compare two geometries__
 
 ```python
-from geotools.datamodel.geo import Geometry
-from geotools.routes.quality.metrics import GeometryComparator
+from locintel.core.datamodel.geo import Geometry
+from locintel.routes.metrics.geometry import GeometryComparator
 
 geo_1 = Geometry.from_geojson('geo1.json')
 geo_2 = Geometry.from_geojson('geo2.json')
@@ -107,10 +106,10 @@ geo_2 = Geometry.from_geojson('geo2.json')
 score = GeometryComparator.compare(geo1, geo2, method='hausdorff')
 ```
 
-__Example: Analyse geometries__
+__Example: analyse geometries__
 
 ```python
-from geotools.datamodel.geo import Geometry
+from locintel.core.datamodel.geo import Geometry
 
 geo = Geometry.from_geojson('geo.json')
 
@@ -118,12 +117,12 @@ geo.has_loops()
 geo.skewness()  # Straight-line-distance/interpolated length
 ```
 
-__Example: Benchmark routes__
+__Example: benchmark routes__
 
 ```python
-from geotools.datamodel.routing import RoutePlan, WayPoint
-from geotools.routes.quality.metrics.geometry import hausdorff_distance
-from geotools.services.routing import calculate_competitive
+from locintel.core.datamodel.routing import RoutePlan, WayPoint
+from locintel.routes.metrics.geometry import hausdorff_distance
+from locintel.harvest.routes import calculate_competitive
 
 rp = RoutePlan(Waypoint(20.0, 10.0), WayPoint(15.1, 10.1), mode='car')
 results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_distance])
@@ -132,8 +131,37 @@ results = calculate_competitive(rp, ['das', 'google'], comparators=[hausdorff_di
 results.to_csv('results.csv')
 ```
 
-## Disambiguation 
+### traces
+
+Tools supporting the processing and handling of trace (GPS) data (e.g. loading, filtering, sampling).
+
+__Example: filter out low confidence GPS points__
+
+```python
+from locintel.traces.filters import LowConfidenceFilter
+
+traces = DruidLoader(**config).load()
+filter_policy = LowConfidenceFilter(min_confidence=0.5).filter
+
+filtered_traces = filter(filter_policy, traces)
+```
+
+__Example: re-sampling__
+
+```python
+from locintel.traces.samplers import SimpleSampler
+
+trace = next(DruidLoader(**config).load())
+resampled_trace = SimpleSampler(period=5).sample(trace
+```
+
+## graphs
+
+Graph abstraction, processing and manipulation.
+
+## Disambiguation
 
 With the wealth of geospatial library out there, it is important to underline what this library is __not__ intended to be:
+
 * A full-featured geospatial data abstraction layer library, [GDAL](https://gdal.org/) is a much better option if you need that
 * A full-featured computational geometry library, [PySAL](https://pysal.org/)  
