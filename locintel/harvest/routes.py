@@ -76,7 +76,7 @@ class GoogleRouter(AbstractRouter):
     def __init__(
         self,
         endpoint="https://maps.googleapis.com/maps/api/directions/json?",
-        key="AIzaSyAKez1fnc-yOASRC3UeFOpSGispN1uuHjI",
+        key="",
         adapter=None,
         **kwargs,
     ):
